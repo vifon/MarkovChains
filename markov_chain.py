@@ -26,9 +26,9 @@ def Tree():
 
 
 class MarkovChain:
-    def __init__(self, samples, memory=1):
+    def __init__(self, samples, chain_order=1):
         self.samples = samples
-        self.memory = memory
+        self.chain_order = chain_order
         self._process_samples()
 
 
@@ -38,32 +38,32 @@ class MarkovChain:
         self.length_deviation = statistics.stdev(sample_lengths)
 
         self.chains = Tree()
-        for line in self.samples:
-            line = SaneList_NoExcept(line)
-            self._create_chain(line, self.memory)
+        for sample in self.samples:
+            sample = SaneList_NoExcept(sample)
+            self._create_chain(sample, self.chain_order)
 
 
-    def _create_chain(self, line, memory):
-        for i in range(len(line)):
+    def _create_chain(self, sample, chain_order):
+        for i in range(len(sample)):
             chain = self.chains
-            for j in range(i, i-memory+1, -1):
+            for j in range(i, i-chain_order+1, -1):
                 # Walk back through all the elements to memorize
                 # except the last one. Create the chain in the tree
                 # while doing so.
-                last = line[j-1]
+                last = sample[j-1]
                 chain = chain[last]
 
-            last = line[i-memory]
+            last = sample[i-chain_order]
             if not chain.get(last):
                 # Create a tree leaf if not present already.
-                chain[last] = list()
-            chain[last].append(line[i])
+                chain[last] = []
+            chain[last].append(sample[i])
 
 
-    def _get_random_character(self, chain, line, memory):
-        for i in range(0, memory):
+    def _get_random_character(self, chain, result, chain_order):
+        for i in range(0, chain_order):
             try:
-                last = line[-i-1]
+                last = result[-i-1]
             except IndexError:
                 last = None
             chain = chain.get(last)
@@ -81,7 +81,7 @@ class MarkovChain:
             try:
                 result.append(
                     self._get_random_character(
-                        self.chains, result, self.memory))
+                        self.chains, result, self.chain_order))
             except KeyError:
                 # Try again.
                 result = []
