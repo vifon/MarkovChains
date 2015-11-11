@@ -61,24 +61,30 @@ class MarkovChain:
 
 
     def _get_random_character(self, chain, line, memory):
-        try:
-            last = line.pop(-1)
-        except IndexError:
-            last = None
-
-        if memory > 1:
-            return self._get_random_character(chain[last], line, memory-1)
-        else:
-            return random.choice(chain[last])
+        for i in range(0, memory):
+            try:
+                last = line[-i-1]
+            except IndexError:
+                last = None
+            chain = chain.get(last)
+            if not chain:
+                # Empty or not existing chain: there is not such
+                # sequence in the sample.
+                raise KeyError
+        return random.choice(chain)
 
 
     def generate(self):
         length = random.gauss(self.mean_length, self.length_deviation)
         result = []
         while len(result) < length:
-            result.append(
-                self._get_random_character(
-                    self.chains, result[:], self.memory))
+            try:
+                result.append(
+                    self._get_random_character(
+                        self.chains, result, self.memory))
+            except KeyError:
+                # Try again.
+                result = []
         return result
 
 
