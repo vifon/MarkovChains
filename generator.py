@@ -24,7 +24,7 @@ def main(argv=None):
                          args.order)
 
     for i in range(args.count):
-        print(markov.generate_name())
+        print("".join(markov.generate()))
 
 
 if __name__ == '__main__':

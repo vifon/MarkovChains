@@ -105,6 +105,3 @@ class MarkovChain:
                 # Try again.
                 result = []
         return result
-
-    def generate_name(self):
-        return "".join(self.generate())
