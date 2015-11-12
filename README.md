@@ -1,7 +1,7 @@
 MarkovChain
 ===========
 
-Word generator based on Markov chains of the arbitrary order
+Sequence generator based on Markov chains of the arbitrary order
 
 SYNOPSIS
 --------

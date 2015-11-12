@@ -27,7 +27,7 @@ def Tree():
 
 
 class MarkovChain:
-    """Word generator based on Markov chains.
+    """Sequence generator based on Markov chains.
 
     Members:
     - samples: Samples passed to the constructor.
