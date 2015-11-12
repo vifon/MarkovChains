@@ -6,7 +6,8 @@ Word generator based on Markov chains of the arbitrary order
 SYNOPSIS
 --------
 
-    generator.py [-h] [-i INFILE] [--count COUNT] [--order ORDER]
+    generator.py [-h] [-i INFILE] [--count COUNT] [--length LENGTH]
+                 [--order ORDER] [--multi-word] [--data]
 
 COPYRIGHT
 ---------
