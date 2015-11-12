@@ -41,26 +41,36 @@ class MarkovChain:
         """Create a Markov chain of a given order with the given samples."""
         self.samples = samples
         self.chain_order = chain_order
-        self._process_samples()
+        if self.samples:
+            self._process_samples(self.samples)
 
-    def _process_samples(self):
-        """Create the tree of Markov chains from the samples."""
-        sample_lengths = [len(sample) for sample in self.samples]
+    def add_samples(self, new_samples):
+        self._build_tree(new_samples);
+        self.samples.extend(new_samples)
+        self._calculate_length_stats(self.samples)
+
+    def _process_samples(self, samples):
+        self._calculate_length_stats(samples)
+        self._build_tree(samples)
+
+    def _calculate_length_stats(self, samples):
+        sample_lengths = [len(sample) for sample in samples]
         self.mean_length = statistics.mean(sample_lengths)
         self.length_deviation = statistics.stdev(sample_lengths)
 
+    def _build_tree(self, samples):
         self.chains = Tree()
-        for sample in self.samples:
+        for sample in samples:
             sample = SaneList_NoExcept(sample)
-            self._create_chain(sample)
+            self._build_subtree(sample)
 
-    def _create_chain(self, sample):
+    def _build_subtree(self, sample):
         for i in range(len(sample)):
             chain = self.chains
             for j in range(i, i-self.chain_order+1, -1):
                 # Walk back through all the elements to memorize
-                # except the last one. Create the chain in the tree
-                # while doing so.
+                # except the last one. Create a path in the tree while
+                # doing so.
                 last = sample[j-1]
                 chain = chain[last]
 
@@ -79,8 +89,7 @@ class MarkovChain:
                 last = None
             chain = chain.get(last)
             if not chain:
-                # Empty or not existing chain: there is not such
-                # sequence in the sample.
+                # No known next element.
                 raise KeyError
         return random.choice(chain)
 
