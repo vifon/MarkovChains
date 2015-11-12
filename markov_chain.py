@@ -1,6 +1,19 @@
+"""Sequence generator based on Markov chains.
+
+Allows creating the sequences based on the sample data.
+
+"""
+
 from collections import defaultdict
 import random
 import statistics
+
+__version__ = "0.9"
+__author__ = "Wojciech Siewierski"
+__email__ = "wojciech.siewierski+python@gmail.com"
+__license__ = "GPL3"
+
+__all__ = ['MarkovChain']
 
 
 class SaneList(list):
@@ -37,6 +50,7 @@ class MarkovChain:
     - chains: The Markov chain tree.
 
     """
+
     def __init__(self, samples, chain_order=1):
         """Create a Markov chain of a given order with the given samples."""
         self.samples = []
