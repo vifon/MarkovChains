@@ -93,7 +93,8 @@ class MarkovChain:
                 raise KeyError
         return random.choice(chain)
 
-    def generate(self, length=0):
+    def generate(self, fixed_length=0):
+        length = fixed_length
         while not length > 0:
             length = random.gauss(self.mean_length, self.length_deviation)
 
@@ -102,6 +103,7 @@ class MarkovChain:
             try:
                 result.append(self._choose_next_element(result))
             except KeyError:
-                # Try again.
-                result = []
+                # Try again. If a given fixed_length is impossible to
+                # attain, expect a stack overflow.
+                return self.generate(fixed_length)
         return result
