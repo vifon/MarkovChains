@@ -39,19 +39,15 @@ class MarkovChain:
     """
     def __init__(self, samples, chain_order=1):
         """Create a Markov chain of a given order with the given samples."""
-        self.samples = samples
+        self.samples = []
         self.chain_order = chain_order
-        if self.samples:
-            self._process_samples(self.samples)
+        self.add_samples(samples)
 
     def add_samples(self, new_samples):
-        self._build_tree(new_samples);
-        self.samples.extend(new_samples)
-        self._calculate_length_stats(self.samples)
-
-    def _process_samples(self, samples):
-        self._calculate_length_stats(samples)
-        self._build_tree(samples)
+        if new_samples:
+            self._build_tree(new_samples)
+            self.samples.extend(new_samples)
+            self._calculate_length_stats(self.samples)
 
     def _calculate_length_stats(self, samples):
         sample_lengths = [len(sample) for sample in samples]
