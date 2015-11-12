@@ -93,8 +93,10 @@ class MarkovChain:
                 raise KeyError
         return random.choice(chain)
 
-    def generate(self):
-        length = random.gauss(self.mean_length, self.length_deviation)
+    def generate(self, length=0):
+        while not length > 0:
+            length = random.gauss(self.mean_length, self.length_deviation)
+
         result = []
         while len(result) < length:
             try:
