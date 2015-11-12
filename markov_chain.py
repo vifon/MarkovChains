@@ -80,7 +80,7 @@ class MarkovChain:
                 chain[last] = []
             chain[last].append(sample[i])
 
-    def _get_random_character(self, result):
+    def _choose_next_element(self, result):
         chain = self.chains
         for i in range(0, self.chain_order):
             try:
@@ -100,7 +100,7 @@ class MarkovChain:
         result = []
         while len(result) < length:
             try:
-                result.append(self._get_random_character(result))
+                result.append(self._choose_next_element(result))
             except KeyError:
                 # Try again.
                 result = []
