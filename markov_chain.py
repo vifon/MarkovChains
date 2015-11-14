@@ -8,7 +8,7 @@ from collections import defaultdict
 import random
 import statistics
 
-__version__ = "0.9"
+__version__ = "0.9.1"
 __author__ = "Wojciech Siewierski"
 __email__ = "wojciech.siewierski+python@gmail.com"
 __license__ = "GPL3"
